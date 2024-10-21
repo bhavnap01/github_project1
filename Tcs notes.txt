@@ -182,7 +182,7 @@ git ls-remote --tags --> list all the remote tags
 git push origin :tagname   --> delete a remote tag
 
 git push origin --tags   --> push all the local tags to remote
-
+git pull origin --tags ==> to pull all the remote tags to local sytem/repo
 
 GitHub -->  github account https://github.com/
 
@@ -226,13 +226,12 @@ pull the changes from remote to local repo: git pull origin brancName
 compare local branch with remote branch: git diff localbranch remotebranch_path
 					 git diff master remotes/origin/bugfix --name-only
 
-
 GitHub Fork
 Pull Requests
 Settings GitHub
 Security Protocols
 clone with ssh , https
-Git workflows
+
 
 Pull Requests-- 
 Scenario: Remote repo with GitHub
@@ -242,3 +241,172 @@ Scenario: Remote repo with GitHub
 	  Merge and close the pull request
 
 Scenario: Local repo we are going to make branchs and then will go to remote branch and see how pull request will work
+	create a new branch in local and make new commits to it
+	pull the changes first from rmote rpo
+	then push the new branch changes to remote repo
+	And check the pull request in github after pushing changes to remote repo
+	Handle the pull request, merge and close it
+
+
+How to know the merged and unmerged branches in git?
+git branch --merged master
+git branch --no-merged master
+
+Fork
+
+Developer A Repo -- original -- upstream
+Developer B Repo -- copied repo -- downstream
+
+fetch -- it will reflect the changs into local repo
+pull --  it will save the changs to working directory
+
+
+Scenario: Configure a remote to local repo with Fork
+Fork the repo from others github account
+come to local repo - open git bash - clone the forked repo
+add the upstream for the forked repo with user github repo url  --> git remote add upstream original_owner/original_rpo.git
+verify the remotes  --> git remote -v
+go to the forked repo make changes there and commit over github
+pull those changes in local repo --> git pull upstream branchName
+
+
+
+Perform cloning using ssh key
+1. ssh-keygen
+2. Do not enter the file name
+3. Do not enter paraphrase -> press ENTER
+4. it will generate a ssh key and stored under the ~/.ssh folder
+5. go to the file and copy the key and paste it to GitHub 
+6. Go to GitHub settings -> SSH & GSH keys -> click on ADD NEW Key --> paste the copied key details there and do enter the title for the key
+7. come back to the gitbash and clone it with simple git clone command using ssh_github_url.
+
+
+Process of pushing the changes from local system to Github using ssh:
+1. create a local git repo  --> git init
+2. will add remote repo using ssh url to local --> git remote add origin ssh_github_url
+3. Now, make changes, stage it and commit it
+4. Push these changs back to Github rpo --> git push origin master
+5. If error occurs while pushing the changes, pull it first --> git pull origin master
+
+
+Issues
+Git & GitHub in IDE
+Git Workflows
+
+Features of Issues:
+1. stay uptodate
+2. Integrate with Github, Github cli, github desktop
+3. Efficient communication, discussions and community managment
+
+
+Configure issues in GitHub:
+1. open a blank issue
+2. added the information
+2. added a task list  using []
+4. added assignees to the issue
+5. added labels and milestones
+6. submit the issue
+
+Git Workflows --
+1. scale with team size
+2. is it easy to undo mistakes and errors with the workflow
+3. does this workflow impose any new unnecessary overhead to the team
+
+
+Types of workflows:
+1. Centralized workflow  -- main
+2. Feature branch workflow -- feature/new-feature
+3. Gitflow workflow -- gitflow extension -- git flow init
+4. Forking  workflow
+
+
+Forking workflow Demo:
+1. Fork a repo
+2. clone your forked repo
+3. add a remote upstram for both orignal rpo and contirbutor's repo
+4. work in a branc, make changes & push the changes
+5. make a pull rquest
+6. git push origin master/feature-branch
+
+
+
+VS Code extensions --
+GitHub Pull rquests
+GtHub repositories
+Remote Repositories
+
+we have clone rpo in VS Code
+we have launched the gitbash terminal in VS
+we have connected our local rpo with remote server in VS code
+learned how to stage and commitn the changes in VS
+we have push the local changes to the server
+how to create new branch in VS code
+we ahve learnt how to create pull request from VS code
+merge & close the pull request from VS
+
+
+	
+GitLab
+GitHub Actions
+
+Git -- locally availble
+GitHub -- publicly available
+Bitbucket --
+GitLab -- 
+
+Install GitLab Runner on windows --
+Gitlab - create project
+ 	 Fork a project
+	 create a branch
+	 add a file
+ 	 git lab users and groups management
+
+Task 1 -->
+1. Demo on Gitlab project creation along with repository maintain.
+2. we have also clone the gitlab project to local system using https gitlab url.
+3. merge request creation for different branch changes and tag creation.
+
+Task 2 --> Fork a project
+
+Task 3 --> Demo on creation of user and provide permission.
+Add user
+Create group
+Grant / Revoke the permissions
+
+Gitlab --> Code -- Plan -- Manage
+
+Build Test Deploy -- pipeline
+
+GitHub Actions --> create wrokflow(YAML file)
+		   .github/workflows
+
+Events -- pull request build and test
+Jobs -- a set of steps excuted on the runner
+runners -- server which runs your workflow
+Actions -- custom application for the github actions platform --
+
+
+Actions Demo -->
+1. create a github-actions-demo.yml file under .github/workflows folder
+2. Add the below configuatio to the yml file --
+name: Github actions demo
+run-name: ${{github.actor}} is testing out the github actions
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "job was automatically trigerred by ${{ github.event_name}}"
+      - run: echo "job is running on ${{runner.os}} server is hosted bu GitHub!!"
+      - name: Check out the rposiory code
+        uses: actions/checkout@v4
+      - run: echo "The ${{github.repository}} this repo is cloned to the runner"
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace}}
+      - run: echo "job's status is ${{job.status}}!!"
+
+3. commit the changes to new branch so that the push event will get trigerred
+4. if you want to make a pull rquest you can crate it otherwise it wont affect the actions execution
+5. you can explore the workflows list under Actions tab
+6. Explore the actions created, check the logs and see how each steps are processed.
